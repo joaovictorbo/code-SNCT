@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Action
 export const fetchTodos = createAsyncThunk("fetchTodos", async () => {
-  const response = await fetch("http://192.168.15.150:8000/Turma/");
+  const response = await fetch("http://26.226.78.158:8000/Turma/");
   return response.json();
 });
 
