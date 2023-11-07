@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './home/App';
 import Vota from './vota/vota';
+import Pagdesc from './pagdesc/pagdesc';
 import reportWebVitals from './reportWebVitals';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/vota",
     element: <Vota/>,
+  },
+  {
+    path: "/pagdesc",
+    element: <Pagdesc/>,
   },
   
 ]);

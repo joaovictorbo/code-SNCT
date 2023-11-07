@@ -26,7 +26,7 @@ function Modal(propos) {
 
   return (
     <div className="minha-clase">
-      <a href="#" id={`open-modal-${propos.posts.id}`} className="saiba-mais open-modal">
+      <a href="/pagdesc" id={`open-modal-${propos.posts.id}`} className="saiba-mais open-modal">
         <img src={info} width={36} height={36} alt="Info" />
       </a>
 

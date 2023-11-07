@@ -9,7 +9,7 @@ import Modal from "../../Componentes/modal";
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
   const [escolas, setEscolas] = React.useState([]);
-  const dataurl = "http://192.168.15.150:8000/Turma/";
+  const dataurl = "http://26.226.78.158:8000/Turma/";
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -66,7 +66,7 @@ const Dados = () => {
         <select className="display-8 text-center custom-select custom-select-lg mb-3" >
           <option value="DEFAULT">Selecione as escolas</option>
           {escolas.length === 0 ? (
-            <option key={0} value={0}>vaziu</option>
+            <option key={0} value={0}>vazio</option>
           ) : (
             escolas['results'].map((e) => (
               <option key={e.id} value={e.id}>{e.name}</option>
@@ -76,9 +76,9 @@ const Dados = () => {
 
       </div>
       <div className="container">
-        <div className="row">
+        <div className="row justify-content-md-left">
         {state.todo.data && state.todo.data['results'].map( (post) => (
-              <div key={post.id} className="col-sm pb-4 h-40 w-30">
+              <div key={post.id} className="col-sm pb-4 pt-4">
                 <div
                   key={post.id}
                   className="card"
@@ -87,21 +87,22 @@ const Dados = () => {
                     backgroundImage:
                       "linear-gradient(to right, #D9666B, #98C5CB)",
                   }}
-                >
+                > 
                   <img
                     src={post.imagem}
                     className="card-img-top"
+                    style={{ height: "200px" }}
                     alt={post.alt}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{post.titulo}</h5>
                     <p className="card-text">{post.descricaoshort}</p>
-
+                    
                     <Modal posts={post} />
                     <p>
                       votos:{post.votos}
                     </p>
-
+                    
                     <button
                       className="btn btn-primary votar"
                       style={{ float: "right" }}
