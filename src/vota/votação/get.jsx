@@ -9,10 +9,10 @@ import Modal from "../../Componentes/modal";
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
   const [escolas, setEscolas] = React.useState([]);
+  const [selectedPolo, setSelectedPolo] = React.useState(null); // adicionamos o estado para armazenar o polo selecionado
   const dataurl = "http://26.226.78.158:8000/Turma/";
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
 
   const votar = async (id)=>{
     const response = await axios.patch(dataurl+'Votar/'+id+'/');
@@ -27,7 +27,16 @@ const Dados = () => {
       console.log(error);
     }
   };
-
+  // const getTurmas = async (selectedPolo) => { // adicionamos o parâmetro selectedPolo
+  //   try {
+  //     const response = await axios.get(dataurl + `?serch=${selectedPolo}`);
+  //     const data = response.data;
+  //     setPosts(data);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const getEscola = async () => {
     try {
       const response = await axios.get(dataurl+'escola/');
@@ -38,12 +47,22 @@ const Dados = () => {
     }
   };
 
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value; // armazenamos o valor selecionado
+    setSelectedPolo(selectedValue); // atualizamos o estado com o polo selecionado
+    // getTurmas(selectedValue); // chamamos a função getTurmas com o valor selecionado
+  }
 
   React.useEffect(() => {
-      dispatch(fetchTodos())
-      getPosts();
+      dispatch(fetchTodos(selectedValue))
       getEscola();
-  }, []);
+      console.log(selectedPolo);
+      if (selectedPolo){
+      }
+      else {
+        getPosts();
+      }
+    }, [selectedPolo]); 
 
   return (
     <div
@@ -62,9 +81,9 @@ const Dados = () => {
           Festival de Aplicativos da Iniciativa CODE
         </p>
         <p className="display-7 text-center text-wrap">Página de votação</p>
-
-        <select className="display-8 text-center custom-select custom-select-lg mb-3" >
-          <option value="DEFAULT">Selecione as escolas</option>
+        <div className="d-flex justify-content-center">
+        <select className="display-8 text-center custom-select custom-select-lg mb-3" onChange={handleSelectChange}>
+          <option value= {0} >Selecione as escolas</option>
           {escolas.length === 0 ? (
             <option key={0} value={0}>vazio</option>
           ) : (
@@ -73,6 +92,7 @@ const Dados = () => {
             ))
           )}
         </select>
+        </div>
 
       </div>
       <div className="container">
@@ -108,7 +128,7 @@ const Dados = () => {
                       style={{ float: "right" }}
                       onClick={(e) =>{
                         votar(post.id);
-                        dispatch(fetchTodos());
+                        dispatch(fetchTodos(selectedValue));
                       
                       }}
                     >

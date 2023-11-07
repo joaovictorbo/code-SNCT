@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Action
-export const fetchTodos = createAsyncThunk("fetchTodos", async () => {
+export const fetchTodos = createAsyncThunk("fetchTodos", async ( selectedPolo) => {
+  if (!!selectedPolo){
+    const response = await fetch("http://26.226.78.158:8000/Turma" + `?serch=${selectedPolo}`);
+  }
   const response = await fetch("http://26.226.78.158:8000/Turma/");
   return response.json();
 });
