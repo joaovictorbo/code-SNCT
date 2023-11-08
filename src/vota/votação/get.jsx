@@ -3,13 +3,14 @@ import axios from "axios";
 import { fetchTodos } from "../../redux/slice/todo";
 import React from "react";
 import grupo from "../../Componentes/assets/grupo2.png";
-import info from "../../Componentes/assets/maisinfo.png";
-import Modal from "../../Componentes/modal";
+import Modal from "../../Componentes/modalcopy";
 
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
   const [escolas, setEscolas] = React.useState([]);
   const [selectedPolo, setSelectedPolo] = React.useState(null); // adicionamos o estado para armazenar o polo selecionado
+
+  
   const dataurl = "http://192.168.15.56:8000/Turma/";
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
