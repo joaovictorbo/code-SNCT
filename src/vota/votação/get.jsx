@@ -3,14 +3,15 @@ import axios from "axios";
 import { fetchTodos } from "../../redux/slice/todo";
 import React from "react";
 import grupo from "../../Componentes/assets/grupo2.png";
-import info from "../../Componentes/assets/maisinfo.png";
-import Modal from "../../Componentes/modal";
+import Modal from "../../Componentes/modalcopy";
 
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
   const [escolas, setEscolas] = React.useState([]);
   const [selectedPolo, setSelectedPolo] = React.useState(null); // adicionamos o estado para armazenar o polo selecionado
-  const dataurl = "http://26.226.78.158:8000/Turma/";
+
+  
+  const dataurl = "http://192.168.15.56:8000/Turma/";
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -27,16 +28,7 @@ const Dados = () => {
       console.log(error);
     }
   };
-  // const getTurmas = async (selectedPolo) => { // adicionamos o parâmetro selectedPolo
-  //   try {
-  //     const response = await axios.get(dataurl + `?serch=${selectedPolo}`);
-  //     const data = response.data;
-  //     setPosts(data);
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
   const getEscola = async () => {
     try {
       const response = await axios.get(dataurl+'escola/');
@@ -54,14 +46,11 @@ const Dados = () => {
   }
 
   React.useEffect(() => {
-      dispatch(fetchTodos(selectedValue))
+      dispatch(fetchTodos(selectedPolo))
       getEscola();
-      console.log(selectedPolo);
-      if (selectedPolo){
-      }
-      else {
-        getPosts();
-      }
+      
+      getPosts();
+      
     }, [selectedPolo]); 
 
   return (
@@ -83,7 +72,7 @@ const Dados = () => {
         <p className="display-7 text-center text-wrap">Página de votação</p>
         <div className="d-flex justify-content-center">
         <select className="display-8 text-center custom-select custom-select-lg mb-3" onChange={handleSelectChange}>
-          <option value= {0} >Selecione as escolas</option>
+          <option value= {-1} >Selecione as escolas</option>
           {escolas.length === 0 ? (
             <option key={0} value={0}>vazio</option>
           ) : (
@@ -128,7 +117,7 @@ const Dados = () => {
                       style={{ float: "right" }}
                       onClick={(e) =>{
                         votar(post.id);
-                        dispatch(fetchTodos(selectedValue));
+                        dispatch(fetchTodos(selectedPolo));
                       
                       }}
                     >

@@ -1,49 +1,65 @@
-import React, { useEffect } from "react";
-import "./modal.css";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import axios from "axios";
+import info from "./assets/maisinfo.png";
+const dataurl = "http://192.168.15.56:8000/Turma/";
 
-function  Modal (propos) {
-  
-
-  return (
-    <div>
-
-        
-
-<div>
-  <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-    Launch demo modal
-  </button>
-  
-  <div className="modal fade" id={propos.posts.id} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div className="modal-dialog modal-dialog-centered" role="document">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id={propos.posts.id}>Modal title</h5>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          Conteúdo do seu modal aqui.
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" className="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
-
-  );
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
-export default Modal;
+export default function NestedModal(propos) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const votar = async (id)=>{
+    const response =await axios.patch(dataurl+'Votar/'+id+'/');
+  }
+  return (
+    <div>
+      
+      <Button onClick={handleOpen}> <img src={info} width={36} height={36} alt="Info" /></Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 400 }}>
+        <div className="minha-clase">
+  
 
-
-
-
-
-
-
+          <div id={`${propos.posts.id}`} >
+            <div className="modal-header">
+              <h3 style={{ color: "black", padding: "1rem" }}>{propos.posts.titulo}</h3>
+            </div>
+            <div className="modal-body">
+              <p style={{ color: "black", padding: "1rem" }}>
+                {propos.posts.descricao}
+              </p>
+            </div>
+          </div>
+        </div>
+          <Button onClick={handleClose}>Fechar</Button>
+          <Button onClick={()=>{votar(propos.posts.id)}}>Votar</Button>
+        </Box>
+      </Modal>
+    </div>
+  );
+}
