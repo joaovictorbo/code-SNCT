@@ -5,6 +5,7 @@ import React from "react";
 import grupo from "../../Componentes/assets/grupo2.png";
 import Modal from "../../Componentes/modalcopy";
 import YouTube from 'react-youtube';
+import "./get.css";
 
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
@@ -71,12 +72,13 @@ const Dados = () => {
           backgroundImage: "linear-gradient(to right, #E2595E, #7AF0F6)",
         }}
       >
-        <p className="display-6 text-center text-wrap ">
-          Festival de Aplicativos da Iniciativa CODE
+        <br></br>
+        <p className="display-6 text-center text-wrap text-dark">
+        Página de votação Festival de Aplicativos da Iniciativa CODE
         </p>
-        <p className="display-7 text-center text-wrap">Página de votação</p>
+        
         <div className="d-flex justify-content-center">
-          <select className="display-8 text-center custom-select custom-select-lg mb-3" onChange={handleSelectChange}>
+          <select id="select" className="display-8 text-center custom-select custom-select-lg mb-3 rounded border border-dark shadow rounded" onChange={handleSelectChange} style={{backgroundColor: 'transparent'}}>
             <option value={-1} >Selecione as escolas</option>
             {escolas.length === 0 ? (
               <option key={0} value={0}>vazio</option>
@@ -89,10 +91,10 @@ const Dados = () => {
         </div>
 
       </div>
-      <div className="container">
+      <div className="col-12 justify-content-center">
         <div className="row justify-content-center">
           {state.todo.data && state.todo.data['results'].map((post) => (
-            <div key={post.id} className="col-sm pb-4 pt-4">
+            <div key={post.id} className="col-md p-4">
               <div
                 key={post.id}
                 className="card"
