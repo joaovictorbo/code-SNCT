@@ -13,13 +13,14 @@ const Dados = () => {
   const [selectedPolo, setSelectedPolo] = React.useState(null); // adicionamos o estado para armazenar o polo selecionado
 
 
-  const dataurl = "http://26.226.78.158:8000/Turma/";
+  const dataurl = "http://192.168.7.132:8000/Turma/";
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const opts = {
     height: '200',
     width: '289',
   }
+
 
   const votar = async (id) => {
     const response = await axios.patch(dataurl + 'Votar/' + id + '/');
@@ -73,23 +74,11 @@ const Dados = () => {
         }}
       >
         <br></br>
-        <p className="display-6 text-center text-wrap text-dark">
+        <p className="display-6 text-center text-wrap text-light">
         Página de votação Festival de Aplicativos da Iniciativa CODE
         </p>
-        
-        <div className="d-flex justify-content-center">
-          <select id="select" className="display-8 text-center custom-select custom-select-lg mb-3 rounded border border-dark shadow rounded" onChange={handleSelectChange} style={{backgroundColor: 'transparent'}}>
-            <option value={-1} >Selecione as escolas</option>
-            {escolas.length === 0 ? (
-              <option key={0} value={0}>vazio</option>
-            ) : (
-              escolas['results'].map((e) => (
-                <option key={e.id} value={e.id}>{e.name}</option>
-              ))
-            )}
-          </select>
-        </div>
-
+        <br></br>
+        <br></br>
       </div>
       <div className="col-12 justify-content-center">
         <div className="row justify-content-center">
@@ -107,17 +96,22 @@ const Dados = () => {
                 <YouTube videoId={post.linkYoutube} opts={opts} />
 
                 <div className="card-body">
-                  <h5 className="card-title">{post.titulo}</h5>
-                  <p className="card-text">{post.descricaoshort}</p>
+                  <h5 className="card-title">{post.nomeAplicativo}</h5>
+                  <p id="descricao" className="card-text">{post.descricao}</p>
                   <p className="m-0">
                     votos:{post.votos}
 
 
                     <button
+                    id="redirect"
                       className="btn btn-primary votar"
                       style={{ float: "right" }}
                       onClick={(e) => {
                         votar(post.id);
+                        document.getElementById('redirect').classname="btn btn-primary votar disabled";
+                        setTimeout(() => {
+                        document.getElementById('redirect').classname="btn btn-primary votar";
+                        }, 2000);
                         dispatch(fetchTodos(selectedPolo));
 
                       }}
