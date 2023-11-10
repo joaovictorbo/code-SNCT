@@ -1,19 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { fetchTodos } from "../../redux/slice/todo";
-import React from "react";
+import React, { useRef } from "react";
 import grupo from "../../Componentes/assets/grupo2.png";
 import Modal from "../../Componentes/modalcopy";
 import YouTube from 'react-youtube';
 import "./get.css";
+import ReCAPTCHA from "react-google-recaptcha"
 
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
   const [escolas, setEscolas] = React.useState([]);
   const [selectedPolo, setSelectedPolo] = React.useState(null); // adicionamos o estado para armazenar o polo selecionado
-
-
-  const dataurl = "http://192.168.7.132:8000/Turma/";
+  const [verifica, setVerifica] = React.useState(false); 
+  const captchaRefs = useRef([]);
+  const usedCaptchaRefs = useRef([]);
+  const dataurl = "http://192.168.1.9:8000/Turma/";
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const opts = {
@@ -21,9 +23,14 @@ const Dados = () => {
     width: '289',
   }
 
-
-  const votar = async (id) => {
+  function onChange(value, index) {
+    console.log("Captcha value:", value);
+    setVerifica(true);
+    usedCaptchaRefs.current.push(index);
+  }
+  const votar = async (id, index) => {
     const response = await axios.patch(dataurl + 'Votar/' + id + '/');
+    usedCaptchaRefs.current = usedCaptchaRefs.current.filter((usedIndex) => usedIndex !== index);
   }
 
   const getPosts = async () => {
@@ -82,7 +89,7 @@ const Dados = () => {
       </div>
       <div className="col-12 justify-content-center">
         <div className="row justify-content-center">
-          {state.todo.data && state.todo.data['results'].map((post) => (
+          {state.todo.data && state.todo.data['results'].map((post, index) => (
             <div key={post.id} className="col-md p-4">
               <div
                 key={post.id}
@@ -106,18 +113,23 @@ const Dados = () => {
                     id="redirect"
                       className="btn btn-primary votar"
                       style={{ float: "right" }}
+                      disabled={!verifica}
                       onClick={(e) => {
-                        votar(post.id);
-                        document.getElementById('redirect').classname="btn btn-primary votar disabled";
-                        setTimeout(() => {
-                        document.getElementById('redirect').classname="btn btn-primary votar";
-                        }, 2000);
+                        votar(post.id, index);
+                        setVerifica(false);
+                        usedCaptchaRefs.current.forEach((usedIndex) => captchaRefs.current[usedIndex].reset());
                         dispatch(fetchTodos(selectedPolo));
 
                       }}
                     >
                       votar
                     </button>
+                    <ReCAPTCHA
+                      ref={(ref) => captchaRefs.current[index] = ref}
+                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                      onChange={(value) => onChange(value, index)}
+                      style={{ transform: "scale(0.8)", WebkitTransform: "scale(0.8)", transformOrigin: "0 0", WebkitTransformOrigin: "0 0", marginTop: "20px" }}
+                    />
                   </p>
 
                 </div>
