@@ -6,7 +6,7 @@ import grupo from "../../Componentes/assets/grupo2.png";
 import Modal from "../../Componentes/modalcopy";
 import YouTube from 'react-youtube';
 import "./get.css";
-import ReCAPTCHA from "react-google-recaptcha"
+import ReCAPTCHA from "react-google-recaptcha-v3"
 
 const Dados = () => {
   const [posts, setPosts] = React.useState([]);
@@ -23,8 +23,10 @@ const Dados = () => {
     width: '289',
   }
 
-  function onChange(value, index) {
-    console.log("Captcha value:", value);
+  const recaptchaRef = useRef(null);
+
+  function onChange(token, index) {
+    console.log("Captcha token:", token);
     setVerifica(true);
     usedCaptchaRefs.current.push(index);
   }
@@ -125,9 +127,10 @@ const Dados = () => {
                       votar
                     </button>
                     <ReCAPTCHA
-                      ref={(ref) => captchaRefs.current[index] = ref}
+                      ref={recaptchaRef}
                       sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                      onChange={(value) => onChange(value, index)}
+                      action="submit"
+                      verifyCallback={(token) => onChange(token, index)}
                       style={{ transform: "scale(0.8)", WebkitTransform: "scale(0.8)", transformOrigin: "0 0", WebkitTransformOrigin: "0 0", marginTop: "20px" }}
                     />
                   </p>
